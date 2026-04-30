@@ -12,7 +12,7 @@ st.set_page_config(page_title="QUO TURF Optimizer", layout="wide")
 st.title("🎯 QUO TURF Optimizer")
 st.markdown("""
 Esta aplicación realiza un análisis de **Alcance y Frecuencia Total No Duplicado** utilizando 
-la lógica de **Relevancia Maestra**.
+la lógica de **Relevancia**.
 """)
 
 # --- FUNCIONES DE APOYO ---
