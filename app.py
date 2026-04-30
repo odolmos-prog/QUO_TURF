@@ -124,12 +124,12 @@ if uploaded_file:
                 for i, (nombre, valor) in enumerate(zip(st.session_state.seleccionadas, st.session_state.alcances_inc)):
                     ax.bar(nombre, valor, bottom=base, color=colores[i], edgecolor='white', alpha=0.8)
                     # Texto dentro de las barras más pequeño
-                    ax.text(i, base + valor/2, f"{valor:.1f}%", ha='center', va='center', fontweight='bold', fontsize=6)
+                    ax.text(i, base + valor/2, f"{valor:.1f}%", ha='center', va='center', fontweight='bold', fontsize=7)
                     base += valor
 
                 ax.set_title(f"Alcance Acumulado: {base:.2f}% (N = {n_muestra})", fontweight='bold')
                 # Letras del eje X más pequeñas
-                plt.xticks(rotation=90, fontsize=6)
+                plt.xticks(rotation=90, fontsize=5)
                 plt.grid(axis='y', linestyle=':', alpha=0.6)
                 st.pyplot(fig)
 
