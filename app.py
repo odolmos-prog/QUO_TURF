@@ -7,9 +7,9 @@ from openpyxl import Workbook
 from openpyxl.drawing.image import Image as OpenpyxlImage
 
 # --- CONFIGURACIÓN DE LA PÁGINA ---
-st.set_page_config(page_title="QUO TURF Optimizer Pro", layout="wide")
+st.set_page_config(page_title="QUO TURF Optimizer", layout="wide")
 
-st.title("🎯 TURF Optimizer Pro")
+st.title("🎯 QUO TURF Optimizer")
 st.markdown("""
 Esta aplicación realiza un análisis de **Alcance y Frecuencia Total No Duplicado** utilizando 
 la lógica de **Relevancia Maestra**.
@@ -118,11 +118,11 @@ if uploaded_file:
                 base = 0
                 for i, (nombre, valor) in enumerate(zip(st.session_state.seleccionadas, st.session_state.alcances_inc)):
                     ax.bar(nombre, valor, bottom=base, color=colores[i], edgecolor='white', alpha=0.8)
-                    ax.text(i, base + valor/2, f"{valor:.1f}%", ha='center', va='center', fontweight='bold', fontsize=8)
+                    ax.text(i, base + valor/2, f"{valor:.1f}%", ha='center', va='center', fontweight='bold', fontsize=6)
                     base += valor
 
                 ax.set_title(f"Alcance Acumulado: {base:.2f}% (N = {n_muestra})", fontweight='bold')
-                plt.xticks(rotation=90, fontsize=8)
+                plt.xticks(rotation=90, fontsize=6)
                 plt.grid(axis='y', linestyle=':', alpha=0.6)
                 st.pyplot(fig)
 
