@@ -7,7 +7,7 @@ from openpyxl import Workbook
 from openpyxl.drawing.image import Image as OpenpyxlImage
 
 # --- CONFIGURACIÓN DE LA PÁGINA ---
-st.set_page_config(page_title="TURF Optimizer Pro", layout="wide")
+st.set_page_config(page_title="QUO TURF Optimizer Pro", layout="wide")
 
 st.title("🎯 TURF Optimizer Pro")
 st.markdown("""
