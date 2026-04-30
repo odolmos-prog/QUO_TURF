@@ -59,10 +59,12 @@ if uploaded_file:
     st.info(f"📊 Muestra actual para análisis: **N = {n_muestra}**")
 
     if n_muestra > 0:
-        # 3. Algoritmo TURF Interactivo[cite: 1]
+        # 3. Algoritmo TURF Interactivo
+        # Inicializamos la máscara con ceros del tamaño de la base filtrada para evitar errores de dimensión
         if 'seleccionadas' not in st.session_state:
             st.session_state.seleccionadas = []
             st.session_state.alcances_inc = []
+            # La máscara ahora se gestionará de forma relativa al DataFrame de trabajo
             st.session_state.mask = pd.Series(False, index=df_trabajo.index)
 
         col1, col2 = st.columns([1, 2])
@@ -73,8 +75,11 @@ if uploaded_file:
             
             if disponibles:
                 datos_paso = []
+                # Ajustamos la máscara al índice actual del df_trabajo para que el operador & funcione
+                mask_actual = st.session_state.mask.reindex(df_trabajo.index, fill_value=False)
+                
                 for op in disponibles:
-                    incremental = (df_trabajo[op].astype(int) & (~st.session_state.mask)).sum()
+                    incremental = (df_trabajo[op].astype(int) & (~mask_actual)).sum()
                     futuras = [r for r in disponibles if r != op]
                     relevancia = calc_relevancia(df_trabajo, op, futuras)
                     datos_paso.append({'Opcion': op, 'Incremental': incremental, 'Relevancia': relevancia})
@@ -84,12 +89,13 @@ if uploaded_file:
                 st.write("**Ranking de Sugerencias:**")
                 st.dataframe(ranking.head(10), use_container_width=True)
                 
-                # Selección por nombre directo (más fácil en App que por código)
                 op_elegida = st.selectbox("Selecciona el estímulo a agregar:", ranking['Opcion'])
                 
                 if st.button("➕ Agregar al Set"):
                     fila = ranking[ranking['Opcion'] == op_elegida].iloc[0]
                     st.session_state.seleccionadas.append(op_elegida)
+                    
+                    # Actualizamos la máscara asegurando consistencia de índices
                     st.session_state.mask |= df_trabajo[op_elegida].astype(bool)
                     st.session_state.alcances_inc.append((fila['Incremental'] / n_muestra) * 100)
                     st.rerun()
@@ -101,7 +107,6 @@ if uploaded_file:
 
         with col2:
             if st.session_state.seleccionadas:
-                # 4. Resultados y Visualización[cite: 1]
                 resumen_data = []
                 acum = 0
                 for nom, alc in zip(st.session_state.seleccionadas, st.session_state.alcances_inc):
@@ -112,26 +117,26 @@ if uploaded_file:
                 st.subheader("📋 Tabla de Jerarquía")
                 st.table(df_jerarquia)
 
-                # Gráfico con tus parámetros exactos[cite: 1]
+                # Gráfico con tamaños de letra ajustados (fontsize=6)
                 fig, ax = plt.subplots(figsize=(10, 5))
                 colores = ['#2E8B57'] + ['#90EE90'] * (len(st.session_state.seleccionadas) - 1)
                 base = 0
                 for i, (nombre, valor) in enumerate(zip(st.session_state.seleccionadas, st.session_state.alcances_inc)):
                     ax.bar(nombre, valor, bottom=base, color=colores[i], edgecolor='white', alpha=0.8)
+                    # Texto dentro de las barras más pequeño
                     ax.text(i, base + valor/2, f"{valor:.1f}%", ha='center', va='center', fontweight='bold', fontsize=6)
                     base += valor
 
                 ax.set_title(f"Alcance Acumulado: {base:.2f}% (N = {n_muestra})", fontweight='bold')
+                # Letras del eje X más pequeñas
                 plt.xticks(rotation=90, fontsize=6)
                 plt.grid(axis='y', linestyle=':', alpha=0.6)
                 st.pyplot(fig)
 
-                # 5. Exportación a Excel[cite: 1]
+                # Exportación a Excel
                 buffer = io.BytesIO()
                 with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
                     df_jerarquia.to_excel(writer, sheet_name='TURF', index=False)
-                    
-                    # Guardamos imagen temporal para el Excel
                     temp_img = "temp_app_plot.png"
                     fig.savefig(temp_img, dpi=100)
                     ws_grafico = writer.book.create_sheet('Gráfico')
