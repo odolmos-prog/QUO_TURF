@@ -129,8 +129,9 @@ if uploaded_file:
 
                 ax.set_title(f"Alcance Acumulado: {base:.2f}% (N = {n_muestra})", fontweight='bold')
                 # Letras del eje X más pequeñas
-                plt.xticks(rotation=90, fontsize=5)
+                plt.xticks(rotation=90, fontsize=7)
                 plt.grid(axis='y', linestyle=':', alpha=0.6)
+                fig.tight_layout()
                 st.pyplot(fig)
 
                 # Exportación a Excel
