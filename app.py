@@ -7,14 +7,22 @@ from openpyxl import Workbook
 from openpyxl.drawing.image import Image as OpenpyxlImage
 
 # --- CONFIGURACIÓN DE LA PÁGINA ---
-st.set_page_config(page_title="QUO TURF Optimizer", layout="wide")
+st.set_page_config(page_title="QUO TURF Optimizer. Contacto: omarolmos@grupoquo.net", layout="wide")
 
-st.title("🎯 QUO TURF Optimizer")
+# --- MOSTRAR LOGO Y TÍTULO ---
+# Usamos columnas para centrar el logo de forma armoniosa
+col_logo1, col_logo2, col_logo3 = st.columns([1, 1, 1])
+with col_logo2:
+    if os.path.exists("LOGO.png"):
+        st.image("LOGO.png", width=250)  # Ajustamos el ancho para que se vea elegante
+
+st.markdown("<h1 style='text-align: center;'>🎯 QUO TURF Optimizer</h1>", unsafe_allow_index=True)
+st.markdown("<p style='text-align: center; font-weight: bold;'>Contacto: omarolmos@grupoquo.net</p>", unsafe_allow_index=True)
+
 st.markdown("""
 Esta aplicación realiza un análisis de **Alcance y Frecuencia Total No Duplicado** utilizando 
 la lógica de **Relevancia**.
 """)
-
 # --- FUNCIONES DE APOYO ---
 def calc_relevancia(df_act, op_eval, restantes):
     """Calcula la sinergia futura según la lógica de desempate conversada."""
