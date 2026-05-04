@@ -15,9 +15,12 @@ col_logo1, col_logo2, col_logo3 = st.columns([1, 1, 1])
 with col_logo2:
     if os.path.exists("LOGO.png"):
         st.image("LOGO.png", width=250)  # Ajustamos el ancho para que se vea elegante
+    else:
+        st.warning("⚠️ No se encontró el archivo LOGO.png en el repositorio.")
 
-st.markdown("<h1 style='text-align: center;'>🎯 QUO TURF Optimizer</h1>", unsafe_allow_index=True)
-st.markdown("<p style='text-align: center; font-weight: bold;'>Contacto: omarolmos@grupoquo.net</p>", unsafe_allow_index=True)
+# CORRECCIÓN: Usamos unsafe_allow_html=True para permitir el centrado con etiquetas HTML
+st.markdown("<h1 style='text-align: center;'>🎯 QUO TURF Optimizer</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-weight: bold;'>Contacto: omarolmos@grupoquo.net</p>", unsafe_allow_html=True)
 
 st.markdown("""
 Esta aplicación realiza un análisis de **Alcance y Frecuencia Total No Duplicado** utilizando 
